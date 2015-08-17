@@ -1,0 +1,36 @@
+Use git fetch + merge/rebase instead of git pull
+================================================
+* Work on 'dev' branch (git checkout -b dev, in case it's not there, then vi->git add->git commit), 
+  then, when ready to push, first update 'master':
+      (make sure master is clean, run git status)
+      git checkout master
+      git fetch (same as: git fetch origin)
+      <see note below on what to do in case there are no changes...>
+      git diff master origin/master ==> optional, see the diff
+      git merge origin/master       ==> should be a fast-fwd merge
+* rebasing makes for a cleaner history: now add dev's commits, as children of master [under dev brach]:
+      (make sure dev is clean, run git status)
+      git checkout dev
+      git rebase master (same as: git rebase master dev)
+* in case of conflicts caused by rebase:
+      git status             ==> see files merged successfully and those who didn't
+      git diff               ==> look for merge conflicts starting with <<<<<<
+  for each file needing manual merge:
+      vi <filename>          ==> manually fix the conflict (or use any other editor)
+      git add <filename>     ==> add to staging area
+  end for
+      git rebase --continue  ==> do this after all conflicts are resolved
+  or at any stage:
+      git rebase --abort 
+* finally do a fast forward merge on 'master':
+      git checkout master
+      git merge dev (or better, git merge --no-ff dev)
+* optional:
+      git branch -d dev
+* Now, ready to push... (git push origin master)
+
+=====> IN CASE THERE WAS NO CHANGE IN MASTER...
+* Move master to point on the last commit of dev:
+      git checkout master
+      git merge dev (although 'git rebase dev' also works)
+* Now, ready to push... (git push origin master)

@@ -1,0 +1,102 @@
+------------
+ git notes
+ -----------
+ 
+ Pro GIT book: http://git-scm.com/book
+ (download as pdf/epub or read online)
+
+   Working      Staging     git directory
+  directory      area           (repo)
+
+           checkout the project    
+     <------------------------------
+     
+       stage files
+     ------------->
+
+                        commit
+                  ----------------->
+
+
+git setup/config
+----------------
+config files:
+  1. /etc/gitconfig: values for every user on the system.
+  2. ~/.gitconfig:   specific to current user.
+  3. .git/config:    cfg file in the git directory of current repo.
+  Priorities: 3 -> 2 -> 1 (3 overrides 2, etc).
+
+configuration options:
+  git config --global user.name "Jon Gler"
+  git config --global user.email jon@gler.com  # --global set the values in ~/.gitconfig
+  git config --global merge.tool kdiff3
+
+check settings using:
+  git config --list
+   or
+  git config {key}, e.g. git config user.name
+
+getting help
+------------
+git help <verb>
+git <verb> --help
+man git -<verb>
+
+git misc
+--------
+Ignoring files (create a list in the following file):
+  $ cat .gitignore
+  *.[oa]       # no .o OR .a files
+  *~           # no temp files
+  build/       # ignore all files in the build/ directory
+  doc/*.txt    # ignore doc/notes.txt, but not doc/server/arch.txt
+
+git basics
+----------
+Initializing a repo:
+  git init     # run in the project's existing directory
+
+Start version controlling existing files:
+  git add *.c
+  git add README
+  git commint -m 'initial project version'
+
+Cloning an existing repo:
+  git clone [url/repo.git]
+  or git clone [url/repo.git] new_repo_name
+  * url can use git:// or http(s):// protocols, the latter uses SSH.
+
+Files status lifecycle:
+  cloned from repo (tracked, unmodified) -> modified     -> staged -> committed
+  or created new file (untracked)        -> added to git -> staged -> committed
+
+Staging a file (a modified file must be staged, even if it was staged before):
+  git add file_name
+
+Checking files status:
+  git status   # shows:
+               # Untracked files         [untracked],
+               # Changes to be committed [staged],
+               # Changed but not updated [modified, not staged].
+
+Diff'ing the working dir and the staging area (shows what needs to be staged):
+  git diff
+  git difftool
+
+Diff'ing staged changes with the last commit (shows staged changes that will go to the next commit):
+  git diff --staged
+
+Commiting changes -- only staged files:
+  git commit                  # requires adding a commit message in vim
+  git commit -m "commit_msg"  # commit message inline
+  git commit -v               # like git commit, but with explicit committed diffs
+  git commit -a               # committing modified, not staged files
+
+Removing files:
+  rm file_name                # deletes the file from disk -> making it modified, not staged
+  git rm                      # stages the file removal
+   or 
+  git rm --cached file_name   # keep the file on hdd but make it untracked
+
+Moving/Renaming files:
+  git mv file_from file_to    # it's actually doing: mv file_from file_to; git rm file_from; git add file_to

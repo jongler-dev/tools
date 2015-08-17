@@ -1,0 +1,24 @@
+------------
+ java notes
+------------
+
+Oracle Java Tutorial: http://docs.oracle.com/javase/tutorial/java/TOC.html
+API specs:            http://docs.oracle.com/javase/7/docs/api/index.html
+
+Library: A set of classes or modules with methods that are intended for use by other programs.
+         An example is the Math library. Libraries are organised into packages. 
+         E.g., the java.lang package includes the Math library among alot of others. 
+         As a side note, a library can be just one class, but that
+         class usually has multiple methods/modules that are used by many other Java programmers.
+
+Package: http://www.leepoint.net/notes-java/language/10basics/import.html
+         Package = directory. 
+         Java classes/interfaces can be grouped together in packages. 
+         A package name is the same as the directory (folder) name which contains the .java files. 
+         You declare packages when you define your Java program, 
+         and you name the packages you want to use from other libraries in an import statement. 
+
+Class:
+Module:
+
+

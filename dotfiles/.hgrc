@@ -1,0 +1,15 @@
+[ui]
+username = "YOUR NAME" <USERNAME@DOMAIN.com>
+
+[extensions]
+hgk=
+hgext.progress=
+hgext.mq=
+hgext.extdiff=
+hgext.record=
+
+[extdiff]
+cmd.kdiff3=
+
+[merge-tools]
+kdiff3.args = $base $local $other -o $output

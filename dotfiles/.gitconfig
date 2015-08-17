@@ -1,0 +1,20 @@
+# .gitconfig is under:
+#     Unix: ~/.gitconfig
+#     Windows: C:\Users\MyLogin\.gitconfig
+# Aliases:
+#     http://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
+
+[user]
+	name = <YOUR_NAME>
+	email = <YOUR_EMAIL>
+[core]
+	editor = vim
+[alias]
+	br = branch
+        co = checkout
+        st = status
+	tree = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold cyan)<%an>%Creset' --abbrev-commit
+	last = log -1 HEAD
+[color]
+	ui = auto
+	interactive = auto
