@@ -4,7 +4,7 @@
 # General
 ##############################################
 
-unalias q
+#unalias q
 
 alias vi='vim' # vim is much nicer :)
 
@@ -18,87 +18,51 @@ alias g='     \grep --color -n' # expression coloring and line numbers
 alias grep='  grep --color -n'
 alias rg='    grep -r'          # recursive grep
 
-function gsrc()  { grep -rsi $1 ../src ; }  # grep in src directory
-function ginc()  { grep -rsi $1 ../inc ; }  # grep in inc directory
-function gtest() { grep -rsi $1 ../test ; } # grep in test directory
-function gtestd() { grep -rsi $1 ../test/dunash ; } # grep in test/dunash directory
-
 alias l='     ls -la --color '
+alias ll='    ls -la'
 
 alias fif='        find . -name "*" | xargs grep -l -s '  # find *in* files (-s for suppressing errors)
 alias ffind='      find . -name '						  # find files
 alias fffind='     find -L . -name '
 alias cfind='      ffind "*.[c|h]" | xargs grep -n -s --color ' # -n for line number, -s for suppressing errors
 
+##############################################
+# directories
+##############################################
+alias workspace='  cd ~/workspace'
+alias downloads='  cd ~/Downloads'
 
 ##############################################
-# clear case 
+# git functions
 ##############################################
-
-alias ct='       cleartool'
-
-alias lsco='     ct lspri -co -short' 	# View / Find check outs
-alias cfg='      ct lsstream -fmt "%[found_bls]CXp\n" -cview | sed "s/, /\n/g"' 	# View / List baselines and overrides
-
-alias ci='       ct ci -nc' 			    # Check in the given file
-alias ciall='    ct ci -cact -nc' 		# Check in all files from the current activity
-alias co='       ct co -nc' 			    # Check out the given file
-alias unco='     ct unco -rm' 			  # Undo checkout of the given file
-alias uncoall='  ct \unco -cact -rm' 	# Undo all checkouts on current activity
-
-alias rebase='   ct rebase -baseline'   # can get 1 or more baselines: rebase baseline[,baseline]
-alias ctcomp='   ct rebase -complete'
-
-alias recommend='ct chstream -cview -rec' # creates a recommended baseline
-# for the current stream
-alias lsblhistory='{     ct \lsact -fmt "%[versions]Cp\n" | sed "s/, /\n/g" | xargs cleartool describe -fmt "%d %u %Xn\n" ; cleartool lsbl -fmt "%d %u %Xn\n"; }    | sed "s/T/ /" | sed "s/+/ /" | tr -s "     " | cut -d" " -f 1,2,4,5 | sort | red baseline.* | column -t'
-# for a specific stream, e.g. lsblhistory-param <stream_name>@/vobs/<VOB_NAME>
-function lsblhistory_param() { { ct \lsact -in $1 -fmt "%[versions]Cp\n" | sed "s/, /\n/g" | xargs cleartool describe -fmt "%d %u %Xn\n" ; cleartool lsbl -stream $1 -fmt "%d %u %Xn\n"; }    | sed "s/T/ /" | sed "s/+/ /" | tr -s "     " | cut -d" " -f 1,2,4,5 | sort | red baseline.* | column -t ; }
-
-alias ctdiff='   ct diff -diff'         # use diff format instead of CC diff format
-function ctgriff() { ct diff -pred $* | head -3 | tail -2 | cut -f4 -d" " | xargs kdiff3 ; }
-# creates a unified formatted patch with all checked out files
-function ctudiff() { OUT_DIR=/tmp/'whoami'/diffs ; mkdir -p $OUT_DIR ; OUT_FILE=$OUT_DIR/udiff_`date +%Y-%m-%d_%H-%M-%S`.patch ; /users/'whoami'/scripts/ctudiff.sh > $OUT_FILE ; vi $OUT_FILE ; }
-
-alias lsact='    ct \lsact -fmt "%[owner]p %n\n" -cview  | column -t | paint ".* `ct \lsact -cact -s`"' # activities on CURRENT view
-alias mkact='    ct mkact -nc -f' # make new activity
-
-# streams
-# Create a child stream under Integration stream, E.g.:
-#   mkstream <parent_baseline_name> <new_child_steam_name>
-# Where $1 is the baseline that the new stream is based on,
-#       $2 is the new child stream name
-function mkstream_<component>() { VOB_DIR=/vobs/<VOB_NAME> ; ct mkstream -in <STREAM_NAME>@$VOB_DIR -baseline $1@$VOB_DIR $2@$VOB_DIR; }
-
-# views
-# Create a dynamic/snapshot view, e.g.:
-#   mkview_srm_dyn <view_tag> <stream_name>
-# Where $1 is the view tag/name,
-#       $2 is the stream name
-function mkview_<component>_dyn()  { ct mkview -tag $1 -stream $2@/vobs/<VOB_NAME> -stgloc <LOCAL_VIEWS_STORAGE_DIR> ; }
-function mkview_<component>_snap() { ct mkview -snap -tag $1 -tmode transparent -stre stream:$2@/vobs/<VOB_NAME> -stgloc <LOCAL_VIEWS_STORAGE_DIR> $1 ; }
-
-alias backview=' ct lsco -cview -r -fmt "%E\n#%[type]p\n" | grep -v directory | cut -f1 -d# | xargs tar -czvf ~/BACKVIEW_`date +%Y-%m-%d`_`ct lsview -s -cview`.tgz'
-
-# cd to a stream
-function cdview() { cd /view/<VIEW_NAME_PREFIX>_$1/vobs/<VOB_NAME>/<COMPONENT_NAME>/build/; }
-
-# start a CC view
-function startview() { ct startview <VIEW_NAME_PREFIX>_$1; }
-
-# view composite baselines
-function ccomp() { ct \lsbl -fmt "%[depends_on_closure]Cp\n" $1 | sed "s/, /\n/g" | sort; }
-
-# diff two baselines, outputing the activities that were delivered
-function diffbl() {      ct \diffbl -act $1 $2   | \grep ">>\|<<" | \grep -v "deliver\|rebase" | col 1,2; }
-function diffbl_pred() { ct \diffbl -pre -act $1 | \grep ">>\|<<" | \grep -v "deliver\|rebase" | col 1,2; }
-
-
-##############################################
-# other tools
-##############################################
-
-alias mkcs='     cscope -Rb -s ../inc -s ../src -s ../test '
+alias g='    git'
+alias gl='   git log'
+alias gl1='  git log -1'
+alias gl2='  git log -2'
+alias gl3='  git log -3'
+alias gl4='  git log -4'
+alias gls='  git ls'
+alias gs='   git status'
+alias gss='  git status -s'
+alias gsb='  git status -sb'
+alias gd='   git diff'
+alias gdw='  git diff -w'
+alias gdc='  git diff --cached'
+alias gdt='  git difftool -d'
+alias gds='  git stash show -p stash@{0}'
+alias gsd='  git stash show -p stash@{0}'
+alias gsl='  git stash list'
+alias ga='   git add'
+alias gam='  git add `git status -s | grep "MM \| M " | cut -c4-`'
+alias gco='  git checkout'
+#alias gcm='  git commit'
+#alias gcma=' git commit --amend'
+#alias gpr='  git pull --rebase'
+alias grev=' git co --'
+alias gg='   git grep -Enp'
+alias gfr='  git fetch && git rebase origin/master'
+alias gfetchrebase=' git fetch && git rebase origin/master'
+alias gpushu=' git push -u origin `git rev-parse --abbrev-ref HEAD`' # push the current branch and set the remote as upstream
 
 
 ##############################################
