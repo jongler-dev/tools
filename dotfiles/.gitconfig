@@ -5,16 +5,62 @@
 #     http://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
 
 [user]
-	name = <YOUR_NAME>
-	email = <YOUR_EMAIL>
-[core]
-	editor = vim
+	name = <YOUR NAME>
+	email = <YOUR EMAIL ADDRESS>
+
 [alias]
-	br = branch
-        co = checkout
-        st = status
-	tree = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold cyan)<%an>%Creset' --abbrev-commit
-	last = log -1 HEAD
-[color]
-	ui = auto
-	interactive = auto
+    br = branch
+    brv = branch -v
+    co = checkout
+    st = status
+    s = status -s
+    sb = status -sb
+
+    # diff
+    dc = diff --cached
+    ds = diff --staged
+    diffc = dc
+    dst = stash show -p stash@{0}
+    diffstash = stash show -p stash@{0}
+
+    # list commits
+    last = log -1 HEAD
+
+    l = "!f() { git log -$1; }; f"
+    l1 = log -1
+    l2 = log -2
+    l3 = log -3
+    l4 = log -4
+    l5 = log -5
+
+    lg = log --oneline --decorate
+
+[color "grep"]
+    linenumber = yellow bold
+    match = red
+    filename = magenta
+
+[core]
+	autocrlf = input
+	pager = less -F -X
+    editor = vim
+
+[push]
+	default = simple
+
+[diff]
+    tool = kdiff3
+[difftool]
+    prompt = false
+[difftool "kdiff3"]
+    path = /usr/bin/kdiff3
+    trustExitCode = false
+
+[merge]
+    tool = kdiff3
+[mergetool]
+    keepBackup = false
+[mergetool "kdiff3"]
+    path = /usr/bin/kdiff3
+    trustExitCode = false
+
